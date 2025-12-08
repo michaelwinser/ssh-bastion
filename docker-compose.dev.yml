@@ -20,3 +20,4 @@ services:
       - SETUID
       - DAC_OVERRIDE
       - FOWNER # Needed for chmod on files not owned by root
+      - SYS_CHROOT # Needed for sshd privilege separation

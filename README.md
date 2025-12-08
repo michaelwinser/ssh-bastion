@@ -53,6 +53,27 @@ ssh -J bastion@<bastion-ip>:2222 user@192.168.1.100
 
 *Note: Replace `<bastion-ip>` with the IP address of your Docker host (or TrueNAS server).*
 
+### 5. Using ~/.ssh/config (Recommended)
+
+To simplify connections, especially with custom ports, add the following to your `~/.ssh/config`:
+
+```ssh
+Host my-bastion
+    HostName <bastion-ip>
+    User bastion
+    Port 2222
+
+Host internal-server
+    HostName 192.168.1.100
+    User user
+    ProxyJump my-bastion
+```
+
+Then you can simply run:
+```bash
+ssh internal-server
+```
+
 ## TrueNAS Scale Deployment
 
 1.  **Create a Dataset**: Create a dataset for the bastion configuration (e.g., `/mnt/pool/apps/bastion-config`).

@@ -76,9 +76,6 @@ ssh internal-server
 
 ### 6. Key Management
 
-#### Live Updates
-The container monitors `/config/authorized_keys` for changes. If you update this file on the host (e.g., via TrueNAS editor or script), the changes are immediately applied to the bastion user without restarting the container.
-
 #### URL Synchronization
 You can automatically sync keys from a public URL (e.g., GitHub raw file, internal web server).
 

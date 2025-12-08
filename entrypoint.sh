@@ -38,10 +38,6 @@ mkdir -p /home/bastion/.ssh
 chmod 700 /home/bastion/.ssh
 chown bastion:bastion /home/bastion/.ssh
 
-# Start the watcher in the background to handle live updates
-echo "Starting key watcher..."
-/watcher.sh &
-
 # Setup URL Sync if configured
 if [ -n "$KEYS_URL" ]; then
     echo "Configuring URL Sync..."

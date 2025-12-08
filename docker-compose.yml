@@ -18,4 +18,5 @@ services:
       - CHOWN
       - SETGID
       - SETUID
-      - DAC_OVERRIDE # Needed for chown/chmod in entrypoint
+      - DAC_OVERRIDE
+      - FOWNER # Needed for chmod on files not owned by root # Needed for chown/chmod in entrypoint

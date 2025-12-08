@@ -38,10 +38,14 @@ if [ -f "$AUTHORIZED_KEYS_SRC" ]; then
     echo "Setting up authorized_keys..."
     mkdir -p /home/bastion/.ssh
     cp "$AUTHORIZED_KEYS_SRC" "$AUTHORIZED_KEYS_DST"
-    chown bastion:bastion /home/bastion/.ssh
-    chown bastion:bastion "$AUTHORIZED_KEYS_DST"
+    
+    # Set permissions while owned by root (requires no special caps if running as root)
     chmod 700 /home/bastion/.ssh
     chmod 600 "$AUTHORIZED_KEYS_DST"
+    
+    # Change ownership to bastion user
+    chown bastion:bastion /home/bastion/.ssh
+    chown bastion:bastion "$AUTHORIZED_KEYS_DST"
 else
     echo "WARNING: No authorized_keys found at $AUTHORIZED_KEYS_SRC. You won't be able to log in!"
 fi

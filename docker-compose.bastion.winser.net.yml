@@ -1,0 +1,25 @@
+services:
+  bastion:
+    # build: .
+    image: ghcr.io/michaelwinser/ssh-bastion:latest
+    container_name: ssh-bastion
+    restart: unless-stopped
+    ports:
+      - "2222:2222"
+    volumes:
+      - /mnt/apps/ssh-bastion:/config
+    environment:
+      - TZ=UTC
+      KEYS_URL=https://raw.githubusercontent.com/michaelwinser/ssh-config/refs/heads/main/authorized_keys
+      SYNC_INTERVAL=0 * * * * # Every hour
+      # Security hardening (optional but recommended)
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+      - FOWNER # Needed for chmod on files not owned by root
+      - SYS_CHROOT # Needed for sshd privilege separation # Needed for chown/chmod in entrypoint

@@ -74,6 +74,25 @@ Then you can simply run:
 ssh internal-server
 ```
 
+### 6. Key Management
+
+#### Live Updates
+The container monitors `/config/authorized_keys` for changes. If you update this file on the host (e.g., via TrueNAS editor or script), the changes are immediately applied to the bastion user without restarting the container.
+
+#### URL Synchronization
+You can automatically sync keys from a public URL (e.g., GitHub raw file, internal web server).
+
+**Environment Variables:**
+-   `KEYS_URL`: URL to fetch `authorized_keys` from (Required to enable sync).
+-   `SYNC_INTERVAL`: Cron schedule (Default: `0 * * * *` - every hour).
+
+**Example Docker Compose:**
+```yaml
+    environment:
+      - KEYS_URL=https://github.com/myuser.keys
+      - SYNC_INTERVAL=*/15 * * * *
+```
+
 ## TrueNAS Scale Deployment
 
 1.  **Create a Dataset**: Create a dataset for the bastion configuration (e.g., `/mnt/pool/apps/bastion-config`).

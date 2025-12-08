@@ -33,21 +33,36 @@ fi
 echo "Linking host keys..."
 ln -sf "$HOST_KEYS_DIR"/ssh_host_* "$ETC_SSH_DIR/"
 
-# Setup authorized_keys for the bastion user
-if [ -f "$AUTHORIZED_KEYS_SRC" ]; then
-    echo "Setting up authorized_keys..."
-    mkdir -p /home/bastion/.ssh
+# Create .ssh directory for bastion user
+mkdir -p /home/bastion/.ssh
+chmod 700 /home/bastion/.ssh
+chown bastion:bastion /home/bastion/.ssh
+
+# Start the watcher in the background to handle live updates
+echo "Starting key watcher..."
+/watcher.sh &
+
+# Setup URL Sync if configured
+if [ -n "$KEYS_URL" ]; then
+    echo "Configuring URL Sync..."
+    # Default to every hour if not set
+    INTERVAL="${SYNC_INTERVAL:-0 * * * *}"
+    echo "$INTERVAL /url-sync.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+    
+    # Run once immediately
+    /url-sync.sh
+    
+    # Start crond in background
+    crond -b -L /var/log/cron.log
+elif [ -f "$AUTHORIZED_KEYS_SRC" ]; then
+    # Fallback: Copy existing keys if no sync is configured
+    echo "Setting up authorized_keys from local file..."
     cp "$AUTHORIZED_KEYS_SRC" "$AUTHORIZED_KEYS_DST"
-    
-    # Set permissions while owned by root (requires no special caps if running as root)
-    chmod 700 /home/bastion/.ssh
     chmod 600 "$AUTHORIZED_KEYS_DST"
-    
-    # Change ownership to bastion user
-    chown bastion:bastion /home/bastion/.ssh
     chown bastion:bastion "$AUTHORIZED_KEYS_DST"
 else
-    echo "WARNING: No authorized_keys found at $AUTHORIZED_KEYS_SRC. You won't be able to log in!"
+    echo "WARNING: No authorized_keys found at $AUTHORIZED_KEYS_SRC and KEYS_URL is not set."
+    echo "You won't be able to log in unless you add keys to /config/authorized_keys!"
 fi
 
 # Fix permissions for host keys (must be owned by root and 600)

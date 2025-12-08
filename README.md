@@ -52,7 +52,8 @@ ssh -J bastion@<bastion-ip>:2222 user@192.168.1.100
 1.  **Create a Dataset**: Create a dataset for the bastion configuration (e.g., `/mnt/pool/apps/bastion-config`).
 2.  **Add Authorized Keys**: Place your `authorized_keys` file inside that dataset.
 3.  **Launch Docker Image**:
-    -   **Image**: Build this image and push to a registry, or use `Launch Docker Image` with a custom build if supported.
+    -   **Image**: `ghcr.io/michaelwinser/ssh-bastion:latest`
+        *(Note: Ensure your TrueNAS has access to pull from GHCR. If the repo is private, you may need to configure registry credentials).*
     -   **Networking**: Map container port `2222` to a host port (e.g., `2222`).
     -   **Storage**: Add a Host Path volume.
         -   **Host Path**: `/mnt/pool/apps/bastion-config`

@@ -10,7 +10,9 @@ services:
       - ./config:/config
     environment:
       - TZ=UTC
-    # Security hardening (optional but recommended)
+      # - KEYS_URL=https://example.com/authorized_keys
+      # - SYNC_INTERVAL=0 * * * * # Every hour
+      # Security hardening (optional but recommended)
     cap_drop:
       - ALL
     cap_add:

@@ -6,8 +6,7 @@ RUN apk add --no-cache openssh-server openssh-keygen shadow
 # Create a non-root user 'bastion'
 # -D: Don't assign a password
 # -s /bin/false: No shell access (only port forwarding)
-RUN adduser -D -s /bin/false -u 1000 bastion \
-    && passwd -u bastion
+RUN adduser -D -s /bin/false -u 1000 bastion
 
 # Create necessary directories
 RUN mkdir -p /config /home/bastion/.ssh \

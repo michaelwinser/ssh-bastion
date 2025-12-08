@@ -31,10 +31,16 @@ Create an `authorized_keys` file in your config directory containing the public 
 cat ~/.ssh/id_rsa.pub > config/authorized_keys
 ```
 
-### 3. Build and Run (Docker Compose)
+### 3. Build and Run
 
+**Production (Pull from GHCR):**
 ```bash
-docker-compose up -d --build
+docker-compose up -d
+```
+
+**Local Development (Build from source):**
+```bash
+docker-compose -f docker-compose.dev.yml up -d --build
 ```
 
 ### 4. Connecting

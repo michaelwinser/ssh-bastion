@@ -1,7 +1,7 @@
 services:
   bastion:
-    build: .
-    image: ssh-bastion:latest
+    # build: .
+    image: ghcr.io/michaelwinser/ssh-bastion:latest
     container_name: ssh-bastion
     restart: unless-stopped
     ports:

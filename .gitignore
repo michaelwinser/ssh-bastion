@@ -1,0 +1,12 @@
+# Configuration and Keys
+config/
+!config/.keep
+ssh_host_keys/
+authorized_keys
+
+# OS generated files
+.DS_Store
+.Thumbs.db
+
+# Docker
+docker-compose.override.yml

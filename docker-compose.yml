@@ -1,0 +1,21 @@
+services:
+  bastion:
+    build: .
+    image: ssh-bastion:latest
+    container_name: ssh-bastion
+    restart: unless-stopped
+    ports:
+      - "2222:2222"
+    volumes:
+      - ./config:/config
+    environment:
+      - TZ=UTC
+    # Security hardening (optional but recommended)
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE # Needed for chown/chmod in entrypoint

@@ -1,0 +1,35 @@
+# Basic SSHD Config for Bastion
+Port 2222
+Protocol 2
+
+# HostKeys are handled by entrypoint script (symlinked)
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Logging
+SyslogFacility AUTH
+LogLevel INFO
+
+# Authentication
+PermitRootLogin no
+PubkeyAuthentication yes
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+
+# User restrictions
+AllowUsers bastion
+
+# Network
+AllowTcpForwarding yes
+GatewayPorts no
+X11Forwarding no
+PrintMotd no
+
+# Keepalive
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# PidFile
+PidFile /run/sshd.pid

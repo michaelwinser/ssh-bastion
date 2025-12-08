@@ -10,8 +10,8 @@ services:
       - /mnt/apps/ssh-bastion:/config
     environment:
       - TZ=UTC
-      KEYS_URL=https://raw.githubusercontent.com/michaelwinser/ssh-config/refs/heads/main/authorized_keys
-      SYNC_INTERVAL=0 * * * * # Every hour
+      - KEYS_URL=https://raw.githubusercontent.com/michaelwinser/ssh-config/refs/heads/main/authorized_keys
+      - SYNC_INTERVAL=0 * * * * # Every hour
       # Security hardening (optional but recommended)
     cap_drop:
       - ALL

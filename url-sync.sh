@@ -19,7 +19,14 @@ echo "[URL-Sync] Fetching keys from $URL..."
 if curl -s -f -S "$URL" -o "$TARGET_FILE.tmp"; then
     mv "$TARGET_FILE.tmp" "$TARGET_FILE"
     chmod 644 "$TARGET_FILE"
-    echo "[URL-Sync] Keys updated successfully."
+    echo "[URL-Sync] Keys updated successfully in $TARGET_FILE."
+    
+    # Copy to bastion user's .ssh directory
+    BASTION_KEYS="/home/bastion/.ssh/authorized_keys"
+    cp "$TARGET_FILE" "$BASTION_KEYS"
+    chown bastion:bastion "$BASTION_KEYS"
+    chmod 600 "$BASTION_KEYS"
+    echo "[URL-Sync] Keys synced to $BASTION_KEYS"
 else
     echo "[URL-Sync] Failed to fetch keys from $URL"
     rm -f "$TARGET_FILE.tmp"
